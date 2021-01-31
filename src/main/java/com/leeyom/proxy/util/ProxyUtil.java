@@ -43,6 +43,7 @@ public class ProxyUtil {
         form.put("nmb", "sb");
         loginRequest.form(form);
         HttpResponse loginResponse = loginRequest.execute();
+        log.info("ByWaveProxy login response：{}", loginResponse.body());
 
         // 休眠5秒，限制访问频率
         Thread.sleep(5000L);
@@ -53,6 +54,7 @@ public class ProxyUtil {
         productRequest.cookie(loginResponse.getCookies());
         String body = productRequest.execute().body();
         Document doc = Jsoup.parse(body);
+        log.info("ByWaveProxy productDetails page：{}", body);
 
         // 还有多少天重置
         String far = doc.select(".countdown-time div").first().text();
@@ -78,6 +80,7 @@ public class ProxyUtil {
         String loginPage = tokenResponse.body();
         Document loginDocument = Jsoup.parse(loginPage);
         String token = loginDocument.select("input[name=_token]").first().val();
+        log.info("monoCloud page token:{}", token);
 
         // 休眠5秒，限制访问频率
         Thread.sleep(5000L);
@@ -93,6 +96,7 @@ public class ProxyUtil {
         loginRequest.form(form);
         loginRequest.cookie(tokenResponse.getCookies());
         HttpResponse loginResponse = loginRequest.execute();
+        log.info("monoCloudProxy login response：{}", loginResponse.body());
 
         Thread.sleep(5000L);
 
@@ -101,6 +105,7 @@ public class ProxyUtil {
         productRequest.header(Header.USER_AGENT, USER_AGENT);
         productRequest.cookie(loginResponse.getCookies());
         String body = productRequest.execute().body();
+        log.info("monoCloudProxy home page：{}", loginResponse.body());
         Document document = Jsoup.parse(body);
         Elements elements = document.select("span[data-plugin=counterup]");
         List<String> list = CollUtil.newArrayList();
