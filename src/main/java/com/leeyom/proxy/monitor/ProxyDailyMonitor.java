@@ -46,7 +46,7 @@ public class ProxyDailyMonitor {
                     "- 服务到期：" + byWaveProxyInfo.getExpireDate() + "\n";
             bot.sendMessage(msg);
         } catch (Exception e) {
-            log.error("ByWave Daily Monitor Error:{}", ExceptionUtil.getMessage(e));
+            log.error("ByWave Daily Monitor Error:", e);
             bot.sendMessage("ByWave Daily Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }
@@ -64,7 +64,7 @@ public class ProxyDailyMonitor {
             // 推送到机器人
             bot.sendMessage(msg);
         } catch (Exception e) {
-            log.error("MonoCloud Daily Monitor Error:{}", ExceptionUtil.getMessage(e));
+            log.error("MonoCloud Daily Monitor Error:", e);
             bot.sendMessage("MonoCloud Daily Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }

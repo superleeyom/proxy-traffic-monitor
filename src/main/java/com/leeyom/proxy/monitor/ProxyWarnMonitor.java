@@ -42,7 +42,7 @@ public class ProxyWarnMonitor {
                 bot.sendMessage("请注意，梯子 ByWave 可使用的流量已经少于20%！！！请节约使用！！！流量使用情况：" + usedStr);
             }
         } catch (Exception e) {
-            log.error("ByWave Warn Monitor Error:{}", ExceptionUtil.getMessage(e));
+            log.error("ByWave Warn Monitor Error:", e);
             bot.sendMessage("ByWave Warn Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }
@@ -57,7 +57,7 @@ public class ProxyWarnMonitor {
                 bot.sendMessage("请注意，梯子 MonoCloud 可使用的流量已经少于20%！！！请节约使用！！！");
             }
         } catch (Exception e) {
-            log.error("MonoCloud Warn Monitor Error:{}", ExceptionUtil.getMessage(e));
+            log.error("MonoCloud Warn Monitor Error:", e);
             bot.sendMessage("MonoCloud Warn Monitor Error:" + ExceptionUtil.getMessage(e));
         }
 

@@ -31,7 +31,7 @@ public class ProxyUtil {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36";
 
-    public static ByWaveProxyInfo getByWaveProxyInfo(String userName, String password) {
+    public static ByWaveProxyInfo getByWaveProxyInfo(String userName, String password) throws InterruptedException {
         // 登录
         HttpRequest loginRequest = HttpUtil.createPost("https://bywave.io/dologin.php");
         loginRequest.header(Header.USER_AGENT, USER_AGENT);
@@ -43,6 +43,9 @@ public class ProxyUtil {
         form.put("nmb", "sb");
         loginRequest.form(form);
         HttpResponse loginResponse = loginRequest.execute();
+
+        // 休眠5秒，限制访问频率
+        Thread.sleep(5000L);
 
         // 跳转到产品列表
         HttpRequest productRequest = HttpUtil.createGet("https://bywave.io/clientarea.php?action=productdetails&id=68488");
@@ -68,13 +71,16 @@ public class ProxyUtil {
 
     }
 
-    public static List<String> getMonoCloudProxyInfo(String email, String password) {
+    public static List<String> getMonoCloudProxyInfo(String email, String password) throws InterruptedException {
 
         // 获取登录需要的cookie和token
         HttpResponse tokenResponse = HttpRequest.get("https://mymonocloud.com/login").header(Header.USER_AGENT, USER_AGENT).execute();
         String loginPage = tokenResponse.body();
         Document loginDocument = Jsoup.parse(loginPage);
         String token = loginDocument.select("input[name=_token]").first().val();
+
+        // 休眠5秒，限制访问频率
+        Thread.sleep(5000L);
 
         // 登录
         HttpRequest loginRequest = HttpUtil.createPost("https://mymonocloud.com/login");
@@ -87,6 +93,8 @@ public class ProxyUtil {
         loginRequest.form(form);
         loginRequest.cookie(tokenResponse.getCookies());
         HttpResponse loginResponse = loginRequest.execute();
+
+        Thread.sleep(5000L);
 
         // 跳转到产品列表
         HttpRequest productRequest = HttpUtil.createGet("https://mymonocloud.com/home");
