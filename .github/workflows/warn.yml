@@ -20,4 +20,4 @@ jobs:
           java-version: 1.8
 
       - name: execute ProxyWarnMonitor
-        run: mvn -B clean compile exec:java -Dexec.mainClass="com.leeyom.proxy.monitor.ProxyWarnMonitor.Main" -Dexec.args="${{ secrets.BY_WAVE_USER_NAME }} ${{ secrets.BY_WAVE_PASSWORD }} ${{ secrets.MONO_CLOUD_USER_NAME }} ${{ secrets.MONO_CLOUD_PASSWORD }} ${{ secrets.TG_CHAT_ID }} ${{ secrets.TG_TOKEN }}" --file pom.xml
+        run: mvn -B clean compile exec:java -Dexec.mainClass="com.leeyom.proxy.monitor.ProxyWarnMonitor" -Dexec.args="${{ secrets.BY_WAVE_USER_NAME }} ${{ secrets.BY_WAVE_PASSWORD }} ${{ secrets.MONO_CLOUD_USER_NAME }} ${{ secrets.MONO_CLOUD_PASSWORD }} ${{ secrets.TG_CHAT_ID }} ${{ secrets.TG_TOKEN }}" --file pom.xml
