@@ -1,0 +1,23 @@
+name: ProxyDailyMonitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 9 * * ?"
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: execute ProxyWarnMonitor
+        run: mvn -B clean compile exec:java -Dexec.mainClass="com.leeyom.proxy.monitor.ProxyDailyMonitor.Main" -Dexec.args="${{ secrets.BY_WAVE_USER_NAME }} ${{ secrets.BY_WAVE_PASSWORD }} ${{ secrets.MONO_CLOUD_USER_NAME }} ${{ secrets.MONO_CLOUD_PASSWORD }} ${{ secrets.TG_CHAT_ID }} ${{ secrets.TG_TOKEN }}" --file pom.xml

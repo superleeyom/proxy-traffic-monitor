@@ -1,0 +1,14 @@
+# 默认配置
+server:
+  port: 9380
+  servlet:
+    context-path: /proxy
+spring:
+  application:
+    name: proxy-traffic-monitor
+
+# 监控
+javamelody:
+  enabled: true
+  init-parameters:
+    log: true
