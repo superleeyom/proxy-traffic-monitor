@@ -58,7 +58,7 @@
         - `MONO_CLOUD_PASSWORD`：monoCloud 密码
         - `TG_CHAT_ID`：telegram 聊天 id
         - `TG_TOKEN`：telegram bot token
-    - 目前有两个定时，分别是`daily.yml`和`warn.yml`，前者是每天 9 点执行一次，汇总流量使用情况发送到 telegram，后者是每隔 1 个小时执行一次，监控可用流量的是否已经少于 20%，若少于 20% 会推送到telegram 进行预警，若要调整时间，可以修改这两个 yml 的 `cron` 表达式。
+    - 目前有两个定时，分别是`daily.yml`和`warn.yml`，前者是每天 9:30 点执行一次，汇总流量使用情况发送到 telegram，后者是每隔 1 个小时执行一次，监控可用流量的是否已经少于 20%，若少于 20% 会推送到telegram 进行预警，若要调整时间，可以修改这两个 yml 的 `cron` 表达式。
     - 如果喜欢，就点个 star 吧，以上就是这些了！Enjoy!
 
    
