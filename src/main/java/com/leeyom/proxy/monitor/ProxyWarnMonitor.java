@@ -1,6 +1,7 @@
 package com.leeyom.proxy.monitor;
 
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
@@ -41,8 +42,8 @@ public class ProxyWarnMonitor {
                 bot.sendMessage("请注意，梯子 ByWave 可使用的流量已经少于20%！！！请节约使用！！！流量使用情况：" + usedStr);
             }
         } catch (Exception e) {
-            log.error("MonoCloud Monitor Error:", e);
-            bot.sendMessage("MonoCloud Monitor Error:" + e.getMessage());
+            log.error("ByWave Warn Monitor Error:{}", ExceptionUtil.getMessage(e));
+            bot.sendMessage("ByWave Warn Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }
 
@@ -51,13 +52,13 @@ public class ProxyWarnMonitor {
         try {
             List<String> list = ProxyUtil.getMonoCloudProxyInfo(email, password);
             Integer usedPercent = Convert.toInt(list.get(0));
-            Integer freePercent = 100 - usedPercent;
+            int freePercent = 100 - usedPercent;
             if (freePercent < 20) {
                 bot.sendMessage("请注意，梯子 MonoCloud 可使用的流量已经少于20%！！！请节约使用！！！");
             }
         } catch (Exception e) {
-            log.error("MonoCloud Monitor Error:", e);
-            bot.sendMessage("MonoCloud Monitor Error:" + e.getMessage());
+            log.error("MonoCloud Warn Monitor Error:{}", ExceptionUtil.getMessage(e));
+            bot.sendMessage("MonoCloud Warn Monitor Error:" + ExceptionUtil.getMessage(e));
         }
 
 

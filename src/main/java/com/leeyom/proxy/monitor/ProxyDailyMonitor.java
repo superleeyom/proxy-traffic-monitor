@@ -2,9 +2,8 @@ package com.leeyom.proxy.monitor;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ReUtil;
-import cn.hutool.core.util.StrUtil;
-import com.leeyom.proxy.common.exception.BizException;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
@@ -47,8 +46,8 @@ public class ProxyDailyMonitor {
                     "- 服务到期：" + byWaveProxyInfo.getExpireDate() + "\n";
             bot.sendMessage(msg);
         } catch (Exception e) {
-            log.error("ByWave Monitor Error:", e);
-            bot.sendMessage("ByWave Monitor Error:" + e.getMessage());
+            log.error("ByWave Daily Monitor Error:{}", ExceptionUtil.getMessage(e));
+            bot.sendMessage("ByWave Daily Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }
 
@@ -65,8 +64,8 @@ public class ProxyDailyMonitor {
             // 推送到机器人
             bot.sendMessage(msg);
         } catch (Exception e) {
-            log.error("MonoCloud Monitor Error:", e);
-            bot.sendMessage("MonoCloud Monitor Error:" + e.getMessage());
+            log.error("MonoCloud Daily Monitor Error:{}", ExceptionUtil.getMessage(e));
+            bot.sendMessage("MonoCloud Daily Monitor Error:" + ExceptionUtil.getMessage(e));
         }
     }
 
