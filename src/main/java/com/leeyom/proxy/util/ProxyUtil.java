@@ -105,7 +105,7 @@ public class ProxyUtil {
         productRequest.header(Header.USER_AGENT, USER_AGENT);
         productRequest.cookie(loginResponse.getCookies());
         String body = productRequest.execute().body();
-        log.info("monoCloudProxy home page：{}", loginResponse.body());
+        log.info("monoCloudProxy home page：{}", body);
         Document document = Jsoup.parse(body);
         Elements elements = document.select("span[data-plugin=counterup]");
         List<String> list = CollUtil.newArrayList();
