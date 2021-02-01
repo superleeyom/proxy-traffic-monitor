@@ -3,7 +3,8 @@ name: ProxyDailyMonitor
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 9 * * *"
+    # github actions 使用的是国际标准时间，和北京时间有8个小时时差，时区换算：http://www.timebie.com/cn/universalbeijing.php
+    - cron: "30 1 * * *"
 
 jobs:
   build:
