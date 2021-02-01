@@ -3,14 +3,11 @@ package com.leeyom.proxy.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
-import com.leeyom.proxy.common.exception.BizException;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
-import com.leeyom.proxy.telegram.TelegramBot;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,6 +32,11 @@ public class ProxyUtil {
         // 登录
         HttpRequest loginRequest = HttpUtil.createPost("https://bywave.io/dologin.php");
         loginRequest.header(Header.USER_AGENT, USER_AGENT);
+
+        // 若访问出现限制，可以在这里设置代理ip访问
+        // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("xxx.xxx.xxx.xxx", 80));
+        // loginRequest.setProxy(proxy);
+
         Map<String, Object> form = MapUtil.newHashMap(4);
         form.put("token", IdUtil.simpleUUID());
         form.put("username", userName);
@@ -113,15 +115,6 @@ public class ProxyUtil {
             list.add(element.text());
         }
         return list;
-    }
-
-    public static void checkParam(String userName, String password, TelegramBot bot) {
-        if (StrUtil.isBlank(userName) || StrUtil.isBlank(password)) {
-            log.warn("用户名和姓名不能为空");
-        }
-        if (bot.getChatId() == 0 || StrUtil.isBlank(bot.getToken())) {
-            throw new BizException("telegram的chatId和token不能为空");
-        }
     }
 
 }

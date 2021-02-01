@@ -5,6 +5,7 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
+import com.leeyom.proxy.util.Validator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ProxyWarnMonitor {
     }
 
     public static void byWaveProxyWarn(String userName, String password, TelegramBot bot) {
-        ProxyUtil.checkParam(userName, password, bot);
+        Validator.checkParam(userName, password, bot);
         try {
             // 获取ByWave流量信息
             ByWaveProxyInfo byWaveProxyInfo = ProxyUtil.getByWaveProxyInfo(userName, password);
@@ -48,7 +49,7 @@ public class ProxyWarnMonitor {
     }
 
     public static void monoCloudProxyWarn(String email, String password, TelegramBot bot) {
-        ProxyUtil.checkParam(email, password, bot);
+        Validator.checkParam(email, password, bot);
         try {
             List<String> list = ProxyUtil.getMonoCloudProxyInfo(email, password);
             Integer usedPercent = Convert.toInt(list.get(0));
@@ -60,8 +61,6 @@ public class ProxyWarnMonitor {
             log.error("MonoCloud Warn Monitor Error:", e);
             bot.sendMessage("MonoCloud Warn Monitor Error:" + ExceptionUtil.getMessage(e));
         }
-
-
     }
 
 }

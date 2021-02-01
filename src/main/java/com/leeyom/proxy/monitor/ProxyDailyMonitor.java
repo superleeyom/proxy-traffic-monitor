@@ -7,6 +7,7 @@ import cn.hutool.core.util.ReUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
+import com.leeyom.proxy.util.Validator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class ProxyDailyMonitor {
     }
 
     public static void monitorByWaveDaily(String userName, String password, TelegramBot bot) {
-        ProxyUtil.checkParam(userName, password, bot);
+        Validator.checkParam(userName, password, bot);
         try {
             // 获取ByWave流量信息
             ByWaveProxyInfo byWaveProxyInfo = ProxyUtil.getByWaveProxyInfo(userName, password);
@@ -52,7 +53,7 @@ public class ProxyDailyMonitor {
     }
 
     public static void monitorMonoCloudDaily(String email, String password, TelegramBot bot) {
-        ProxyUtil.checkParam(email, password, bot);
+        Validator.checkParam(email, password, bot);
         try {
             // 获取MonoCloud流量信息
             List<String> list = ProxyUtil.getMonoCloudProxyInfo(email, password);
