@@ -23,7 +23,7 @@ import java.util.List;
 @Service
 public class ProxyDailyMonitor {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String byWaveUserName = args[0];
         String byWavePassword = args[1];
         String monoCloudUserName = args[2];
@@ -31,6 +31,7 @@ public class ProxyDailyMonitor {
         String tgChatId = args[4];
         String tgToken = args[5];
         monitorByWaveDaily(byWaveUserName, byWavePassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
+        Thread.sleep(2000);
         monitorMonoCloudDaily(monoCloudUserName, monoCloudPassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
     }
 

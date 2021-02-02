@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 public class ProxyWarnMonitor {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String byWaveUserName = args[0];
         String byWavePassword = args[1];
         String monoCloudUserName = args[2];
@@ -27,6 +27,7 @@ public class ProxyWarnMonitor {
         String tgChatId = args[4];
         String tgToken = args[5];
         byWaveProxyWarn(byWaveUserName, byWavePassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
+        Thread.sleep(2000);
         monoCloudProxyWarn(monoCloudUserName, monoCloudPassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
     }
 

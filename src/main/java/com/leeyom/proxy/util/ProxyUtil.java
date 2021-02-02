@@ -29,6 +29,10 @@ public class ProxyUtil {
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36";
 
     public static ByWaveProxyInfo getByWaveProxyInfo(String userName, String password) throws InterruptedException {
+
+        // 设置https协议访问
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
+
         // 登录
         HttpRequest loginRequest = HttpUtil.createPost("https://bywave.io/dologin.php");
         loginRequest.header(Header.USER_AGENT, USER_AGENT);
@@ -76,6 +80,9 @@ public class ProxyUtil {
     }
 
     public static List<String> getMonoCloudProxyInfo(String email, String password) throws InterruptedException {
+
+        // 设置https协议访问
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2,SSLv3");
 
         // 获取登录需要的cookie和token
         HttpResponse tokenResponse = HttpRequest.get("https://mymonocloud.com/login").header(Header.USER_AGENT, USER_AGENT).execute();
