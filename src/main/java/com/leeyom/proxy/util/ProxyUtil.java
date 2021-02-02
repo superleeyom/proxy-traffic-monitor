@@ -3,6 +3,7 @@ package com.leeyom.proxy.util;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -27,6 +28,7 @@ import java.util.Map;
 public class ProxyUtil {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36";
+    public static final String[] LIMIT_ARRAY = {"检测页面", "网站当前访问量较大"};
 
     public static ByWaveProxyInfo getByWaveProxyInfo(String userName, String password) throws InterruptedException {
 
@@ -50,6 +52,11 @@ public class ProxyUtil {
         loginRequest.form(form);
         HttpResponse loginResponse = loginRequest.execute();
         log.info("ByWaveProxy login response：{}", loginResponse.body());
+
+        if (StrUtil.containsAny(loginResponse.body(), LIMIT_ARRAY)) {
+            log.error("ByWaveProxy 访问被拦截，需要更换 ip 后才能访问");
+            return null;
+        }
 
         // 休眠5秒，限制访问频率
         Thread.sleep(5000L);

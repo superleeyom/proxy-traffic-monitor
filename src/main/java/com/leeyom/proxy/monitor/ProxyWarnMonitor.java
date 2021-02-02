@@ -2,6 +2,7 @@ package com.leeyom.proxy.monitor;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
@@ -36,6 +37,10 @@ public class ProxyWarnMonitor {
         try {
             // 获取ByWave流量信息
             ByWaveProxyInfo byWaveProxyInfo = ProxyUtil.getByWaveProxyInfo(userName, password);
+            if (ObjectUtil.isNull(byWaveProxyInfo)) {
+                bot.sendMessage("ByWaveProxy 访问被限制，请更换 ip 后重试");
+                return;
+            }
             Double freeNum = Convert.toDouble(byWaveProxyInfo.getTrafficFreeNum());
             Double usedNum = Convert.toDouble(byWaveProxyInfo.getTrafficUsedNum());
             double freePercent = freeNum / (freeNum + usedNum);

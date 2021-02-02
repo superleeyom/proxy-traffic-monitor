@@ -3,6 +3,7 @@ package com.leeyom.proxy.monitor;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.ReUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
@@ -40,12 +41,16 @@ public class ProxyDailyMonitor {
         try {
             // 获取ByWave流量信息
             ByWaveProxyInfo byWaveProxyInfo = ProxyUtil.getByWaveProxyInfo(userName, password);
-            // 推送到机器人
-            String msg = "梯子 ByWave 流量 " + DateUtil.today() + " 使用情况：" + "\n" +
-                    "- 重置流量：" + ReUtil.getFirstNumber(byWaveProxyInfo.getFar()) + "days" + "\n" +
-                    "- 可使用的流量：" + byWaveProxyInfo.getTrafficFreeNum() + byWaveProxyInfo.getTrafficFreeUnit() + "\n" +
-                    "- 已使用的流量：" + byWaveProxyInfo.getTrafficUsedNum() + byWaveProxyInfo.getTrafficUsedUnit() + "\n" +
-                    "- 服务到期：" + byWaveProxyInfo.getExpireDate() + "\n";
+            String msg;
+            if (ObjectUtil.isNull(byWaveProxyInfo)) {
+                msg = "ByWaveProxy 访问被限制，请更换 ip 后重试";
+            } else {
+                msg = "梯子 ByWave 流量 " + DateUtil.today() + " 使用情况：" + "\n" +
+                        "- 重置流量：" + ReUtil.getFirstNumber(byWaveProxyInfo.getFar()) + "days" + "\n" +
+                        "- 可使用的流量：" + byWaveProxyInfo.getTrafficFreeNum() + byWaveProxyInfo.getTrafficFreeUnit() + "\n" +
+                        "- 已使用的流量：" + byWaveProxyInfo.getTrafficUsedNum() + byWaveProxyInfo.getTrafficUsedUnit() + "\n" +
+                        "- 服务到期：" + byWaveProxyInfo.getExpireDate() + "\n";
+            }
             bot.sendMessage(msg);
         } catch (Exception e) {
             log.error("ByWave Daily Monitor Error:", e);
