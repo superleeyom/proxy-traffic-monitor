@@ -3,10 +3,10 @@ package com.leeyom.proxy.monitor;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.leeyom.proxy.domain.ByWaveProxyInfo;
 import com.leeyom.proxy.telegram.TelegramBot;
 import com.leeyom.proxy.util.ProxyUtil;
-import com.leeyom.proxy.util.Validator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -20,20 +20,27 @@ import java.util.List;
 @Slf4j
 public class ProxyWarnMonitor {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         String byWaveUserName = args[0];
         String byWavePassword = args[1];
         String monoCloudUserName = args[2];
         String monoCloudPassword = args[3];
         String tgChatId = args[4];
         String tgToken = args[5];
-        byWaveProxyWarn(byWaveUserName, byWavePassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
-        Thread.sleep(2000);
-        monoCloudProxyWarn(monoCloudUserName, monoCloudPassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
+
+        if (StrUtil.isAllNotBlank(byWaveUserName, byWavePassword, tgChatId, tgToken)) {
+            byWaveProxyWarn(byWaveUserName, byWavePassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
+        } else {
+            log.warn("ByWave 监控失败，请检查参数是否遗漏");
+        }
+        if (StrUtil.isAllNotBlank(monoCloudUserName, monoCloudPassword, tgChatId, tgToken)) {
+            monoCloudProxyWarn(monoCloudUserName, monoCloudPassword, new TelegramBot(Convert.toLong(tgChatId), tgToken));
+        } else {
+            log.warn("MonoCloud 监控失败，请检查参数是否遗漏");
+        }
     }
 
     public static void byWaveProxyWarn(String userName, String password, TelegramBot bot) {
-        Validator.checkParam(userName, password, bot);
         try {
             // 获取ByWave流量信息
             ByWaveProxyInfo byWaveProxyInfo = ProxyUtil.getByWaveProxyInfo(userName, password);
@@ -55,7 +62,6 @@ public class ProxyWarnMonitor {
     }
 
     public static void monoCloudProxyWarn(String email, String password, TelegramBot bot) {
-        Validator.checkParam(email, password, bot);
         try {
             List<String> list = ProxyUtil.getMonoCloudProxyInfo(email, password);
             Integer usedPercent = Convert.toInt(list.get(0));
