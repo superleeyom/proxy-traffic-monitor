@@ -28,6 +28,7 @@ import java.util.Map;
 public class ProxyUtil {
 
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36";
+    public static final String USER_AGENT_BY_WAVE = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36";
     public static final String[] LIMIT_ARRAY = {"检测页面", "网站当前访问量较大"};
 
     public static ByWaveProxyInfo getByWaveProxyInfo(String userName, String password) throws InterruptedException {
@@ -37,7 +38,15 @@ public class ProxyUtil {
 
         // 登录
         HttpRequest loginRequest = HttpUtil.createPost("https://bywave.io/dologin.php");
-        loginRequest.header(Header.USER_AGENT, USER_AGENT);
+        loginRequest.header(Header.USER_AGENT, USER_AGENT_BY_WAVE);
+        loginRequest.header(Header.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+        loginRequest.header(Header.ACCEPT_ENCODING, "gzip, deflate, br");
+        loginRequest.header(Header.ACCEPT_LANGUAGE, "zh-CN,zh;q=0.9,ko;q=0.8,en;q=0.7,ja;q=0.6,zh-TW;q=0.5");
+        loginRequest.header(Header.CACHE_CONTROL, "max-age=0");
+        loginRequest.header(Header.CONTENT_LENGTH, "107");
+        loginRequest.header(Header.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        loginRequest.header(Header.ORIGIN, "https://bywave.io");
+        loginRequest.header(Header.REFERER, "https://bywave.io/clientarea.php");
 
         // 若访问出现限制，可以在这里设置代理ip访问
         // Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("xxx.xxx.xxx.xxx", 80));
@@ -63,7 +72,12 @@ public class ProxyUtil {
 
         // 跳转到产品列表
         HttpRequest productRequest = HttpUtil.createGet("https://bywave.io/clientarea.php?action=productdetails&id=68488");
-        productRequest.header(Header.USER_AGENT, USER_AGENT);
+        productRequest.header(Header.USER_AGENT, USER_AGENT_BY_WAVE);
+        loginRequest.header(Header.ACCEPT, "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+        loginRequest.header(Header.ACCEPT_ENCODING, "gzip, deflate, br");
+        loginRequest.header(Header.ACCEPT_LANGUAGE, "zh-CN,zh;q=0.9,ko;q=0.8,en;q=0.7,ja;q=0.6,zh-TW;q=0.5");
+        loginRequest.header(Header.REFERER, "https://bywave.io/clientarea.php");
+
         productRequest.cookie(loginResponse.getCookies());
         String body = productRequest.execute().body();
         Document doc = Jsoup.parse(body);
